@@ -37,3 +37,14 @@ class World:
     def render(self):
         for chunk in self.chunks:
             chunk.render()
+    def get_terrain_height(self, x, z):
+        # Find the chunk and exact position within the chunk
+        chunk_x, chunk_z = x // CHUNK_SIZE, z // CHUNK_SIZE
+        local_x, local_z = x % CHUNK_SIZE, z % CHUNK_SIZE
+        chunk_index = chunk_x + WORLD_W * chunk_z  # Simplified index
+
+        # Get height within this chunk at (local_x, local_z)
+        if 0 <= chunk_index < len(self.chunks) and self.chunks[chunk_index]:
+            return self.chunks[chunk_index].get_height(local_x, local_z)
+        else:
+            return 0  # Default ground level if outside bounds
