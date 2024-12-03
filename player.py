@@ -100,8 +100,8 @@ class Player(Camera):
         Handles mouse clicks for voxel interaction.
         This method handles the left and right mouse button presses to interact with the world.
         """
+        voxel_handler = self.app.scene.world.voxel_handler
         if event.type == pg.MOUSEBUTTONDOWN:
-            voxel_handler = self.app.scene.world.voxel_handler
             if event.button == 1:
                 voxel_handler.set_voxel()
             if event.button == 3:
