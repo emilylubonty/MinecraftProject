@@ -6,7 +6,7 @@ from shader_program import ShaderProgram
 from scene import Scene
 from player import Player
 from textures import Textures
-from dialoguebox import DialogueBox
+from dialoguebox import DialogueBox 
 
 class VoxelEngine:
     def __init__(self):
