@@ -6,7 +6,7 @@ from shader_program import ShaderProgram
 from scene import Scene
 from player import Player
 from textures import Textures
-
+from dialoguebox import DialogueBox
 
 class VoxelEngine:
     def __init__(self):
@@ -38,6 +38,7 @@ class VoxelEngine:
         self.player = Player(self)
         self.shader_program = ShaderProgram(self)
         self.scene = Scene(self)
+        self.dialogue_box = DialogueBox(self.screen)
 
     def update(self):
         self.player.update()
@@ -50,6 +51,7 @@ class VoxelEngine:
 
     def render(self):
         self.ctx.clear(color=BG_COLOR)
+        self.dialogue_box.render()
         self.scene.render()
         pg.display.flip()
 
@@ -57,6 +59,10 @@ class VoxelEngine:
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 self.is_running = False
+            elif event.type == pg.KEYDOWN and event.key == pg.K_q:
+                self.quest_box.show("Find a water source!")
+            elif event.type == pg.KEYDOWN and event.key == pg.K_h:
+                self.quest_box.hide()
             self.player.handle_event(event=event)
 
     def run(self):

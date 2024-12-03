@@ -1,3 +1,4 @@
+import pygame as pg
 from noise import noise2, noise3
 from random import random
 from settings import *
@@ -74,6 +75,10 @@ def set_voxel_id(voxels, x, y, z, wx, wy, wz, world_height):
     if wy < DIRT_LVL:
         place_tree(voxels, x, y, z, voxel_id)
 
+    # Place NPC
+    if wy < DIRT_LVL:
+        place_npc(voxels, x, y, z, voxel_id)
+
 
 @njit
 def place_tree(voxels, x, y, z, voxel_id):
@@ -107,3 +112,37 @@ def place_tree(voxels, x, y, z, voxel_id):
 
     # top
     voxels[get_index(x, y + TREE_HEIGHT - 2, z)] = LEAVES
+
+@njit 
+def place_npc(voxels, x, y, z, voxel_id):
+    """
+    This function generates the NPC's placement 
+    """
+    rnd = random()
+    if voxel_id != GRASS or rnd > NPC_PROBABILITY:
+        return None
+    if y + NPC_HEIGHT >= CHUNK_SIZE:
+        return None
+    if x - NPC_H_WIDTH < 0 or x + NPC_H_WIDTH >= CHUNK_SIZE:
+        return None
+    if z - NPC_H_WIDTH < 0 or z + NPC_H_WIDTH >= CHUNK_SIZE:
+        return None
+
+    voxels[get_index(x, y, z)] = DIRT # Dirt under NPC
+
+    for iy in range(1, NPC_HEIGHT - 2):
+        voxels[get_index(x, y + iy, z)] = SNOW # Body of NPC
+    
+    for iy in range (1, NPC_WIDTH + 1, 1):
+        voxels[get_index(x, y + iy, z)] = SNOW # Arms of NPC?
+
+
+
+
+
+
+
+
+        
+
+        
