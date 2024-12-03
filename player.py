@@ -106,3 +106,10 @@ class Player(Camera):
                 voxel_handler.set_voxel()
             if event.button == 3:
                 voxel_handler.switch_mode()
+        elif event.type == pg.MOUSEWHEEL:
+            if event.y < 0 :
+                voxel_handler.switch_voxel_down()
+                print(voxel_handler.switch_voxel_down())
+            elif event.y > 0 :
+                voxel_handler.switch_voxel_up()
+                print(voxel_handler.switch_voxel_up())
