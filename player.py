@@ -15,12 +15,19 @@ class Player(Camera):
 
     def handle_event(self, event):
         # adding and removing voxels with clicks
+        voxel_handler = self.app.scene.world.voxel_handler
         if event.type == pg.MOUSEBUTTONDOWN:
-            voxel_handler = self.app.scene.world.voxel_handler
             if event.button == 1:
                 voxel_handler.set_voxel()
-            if event.button == 3:
+            elif event.button == 3:
                 voxel_handler.switch_mode()
+        elif event.type == pg.MOUSEWHEEL :
+            if event.y < 0 :
+                voxel_handler.switch_voxel_down()
+                print(voxel_handler.switch_voxel_down())
+            elif event.y > 0 :
+                voxel_handler.switch_voxel_up()
+                print(voxel_handler.switch_voxel_up())
 
     def mouse_control(self):
         mouse_dx, mouse_dy = pg.mouse.get_rel()
@@ -30,6 +37,7 @@ class Player(Camera):
             self.rotate_pitch(delta_y=mouse_dy * MOUSE_SENSITIVITY)
 
     def keyboard_control(self):
+        voxel_handler = self.app.scene.world.voxel_handler
         key_state = pg.key.get_pressed()
         vel = PLAYER_SPEED * self.app.delta_time
         if key_state[pg.K_w]:
