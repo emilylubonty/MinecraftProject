@@ -60,9 +60,9 @@ class VoxelEngine:
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 self.is_running = False
             elif event.type == pg.KEYDOWN and event.key == pg.K_q:
-                self.quest_box.show("Find a water source!")
+                self.dialogue_box.show("Find a water source!")
             elif event.type == pg.KEYDOWN and event.key == pg.K_h:
-                self.quest_box.hide()
+                self.dialogue_box.hide()
             self.player.handle_event(event=event)
 
     def run(self):
