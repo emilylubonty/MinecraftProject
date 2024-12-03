@@ -38,7 +38,7 @@ class VoxelEngine:
         self.player = Player(self)
         self.shader_program = ShaderProgram(self)
         self.scene = Scene(self)
-        self.dialogue_box = DialogueBox(self.screen)
+        self.dialogue_box = DialogueBox(self)
 
     def update(self):
         self.player.update()
@@ -51,7 +51,7 @@ class VoxelEngine:
 
     def render(self):
         self.ctx.clear(color=BG_COLOR)
-        self.dialogue_box.render()
+        self.dialogue_box.render(display_surface=True)
         self.scene.render()
         pg.display.flip()
 
