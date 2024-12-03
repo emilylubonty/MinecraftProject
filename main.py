@@ -6,7 +6,39 @@ from shader_program import ShaderProgram
 from scene import Scene
 from player import Player
 from textures import Textures
+from settings import *
 
+class DialogueBox:
+    def __init__(self, screen, font_name="Monospace", font_size=20, box_color=(0, 0, 0, 180), text_color=(255, 255, 255)):
+        self.screen = screen
+        self.font = pg.font.SysFont(font_name, font_size)
+        self.box_color = box_color
+        self.text_color = text_color
+        self.is_visible = False
+        self.quest_text = ""
+
+    def show(self, text):
+        self.quest_text = text
+        self.is_visible = True
+
+    def hide(self):
+        self.is_visible = False
+
+    def render(self):
+        if not self.is_visible:
+            return
+        
+        box_width, box_height = 400, 100
+        box_surface = pg.Surface((box_width, box_height), pg.SRCALPHA)
+        box_surface.fill(self.box_color)
+        
+        text_surface = self.font.render(self.quest_text, True, self.text_color)
+        text_rect = text_surface.get_rect(center=(box_width // 2, box_height // 2))
+        box_surface.blit(text_surface, text_rect)
+
+        screen_rect = self.screen.get_rect()
+        box_rect = box_surface.get_rect(center=(screen_rect.centerx, screen_rect.centery))
+        self.screen.blit(box_surface, box_rect)
 
 class VoxelEngine:
     def __init__(self):
@@ -38,6 +70,7 @@ class VoxelEngine:
         self.player = Player(self)
         self.shader_program = ShaderProgram(self)
         self.scene = Scene(self)
+        self.dialogue_box = DialogueBox(self.screen)
 
     def update(self):
         self.player.update()
@@ -50,6 +83,7 @@ class VoxelEngine:
 
     def render(self):
         self.ctx.clear(color=BG_COLOR)
+        self.dialogue_box.render()
         self.scene.render()
         pg.display.flip()
 
@@ -57,6 +91,10 @@ class VoxelEngine:
         for event in pg.event.get():
             if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
                 self.is_running = False
+            elif event.type == pg.KEYDOWN and event.key == pg.K_q:
+                self.quest_box.show("Find a water source!")
+            elif event.type == pg.KEYDOWN and event.key == pg.K_h:
+                self.quest_box.hide()
             self.player.handle_event(event=event)
 
     def run(self):
