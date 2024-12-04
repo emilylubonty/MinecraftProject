@@ -6,7 +6,8 @@ from shader_program import ShaderProgram
 from scene import Scene
 from player import Player
 from textures import Textures
-from dialoguebox import DialogueBox 
+from dialoguebox import DialogueBox
+from display_blocks import Display_Blocks 
 
 class VoxelEngine:
     def __init__(self):
@@ -17,7 +18,7 @@ class VoxelEngine:
         pg.display.gl_set_attribute(pg.GL_DEPTH_SIZE, DEPTH_SIZE)
         pg.display.gl_set_attribute(pg.GL_MULTISAMPLESAMPLES, NUM_SAMPLES)
 
-        pg.display.set_mode(WIN_RES, flags=pg.OPENGL | pg.DOUBLEBUF)
+        self.screen = pg.display.set_mode(WIN_RES, flags=pg.OPENGL | pg.DOUBLEBUF)
         self.ctx = mgl.create_context()
 
         self.ctx.enable(flags=mgl.DEPTH_TEST | mgl.CULL_FACE | mgl.BLEND)
@@ -39,6 +40,8 @@ class VoxelEngine:
         self.shader_program = ShaderProgram(self)
         self.scene = Scene(self)
         self.dialogue_box = DialogueBox(self)
+        self.display_blocks = Display_Blocks(self)
+    
 
     def update(self):
         self.player.update()
@@ -51,8 +54,10 @@ class VoxelEngine:
 
     def render(self):
         self.ctx.clear(color=BG_COLOR)
-        self.dialogue_box.render(display_surface=True)
+        self.dialogue_box.render(display_surface=self.screen)
+        self.display_blocks.display_voxel(show_block_type = self.screen)
         self.scene.render()
+        
         pg.display.flip()
 
     def handle_events(self):

@@ -1,6 +1,5 @@
 from settings import *
 from meshes.chunk_mesh_builder import get_chunk_index
-import time
 
 class VoxelHandler:
     def __init__(self, world):
@@ -17,7 +16,7 @@ class VoxelHandler:
 
         self.interaction_mode = True  # 0: remove voxel   1: add voxel
         self.new_voxel_id = DIRT
-        see_voxel_id = "Dirt"
+        self.see_voxel_id = "Dirt"
 
     def add_voxel(self):
         if self.voxel_id:
@@ -40,55 +39,55 @@ class VoxelHandler:
 
             self.chunk.mesh.rebuild()
             self.rebuild_adjacent_chunks()
+
+    def see_voxel(self):
+        return str(self.see_voxel_id)
         
     def switch_voxel_up(self) :
         if self.new_voxel_id == DIRT : 
             self.new_voxel_id = SNOW
-            see_voxel_id = "Snow"
+            self.see_voxel_id = "Snow"
         elif self.new_voxel_id == SNOW : 
             self.new_voxel_id = SAND
-            see_voxel_id = "Sand"
+            self.see_voxel_id = "Sand"
         elif self.new_voxel_id == SAND :
             self.new_voxel_id = LEAVES
-            see_voxel_id = "Leaves"
+            self.see_voxel_id = "Leaves"
         elif self.new_voxel_id == LEAVES :
             self.new_voxel_id = GRASS
-            see_voxel_id = "Grass"
+            self.see_voxel_id = "Grass"
         elif self.new_voxel_id == GRASS :
             self.new_voxel_id = WOOD
-            see_voxel_id = "Wood"
+            self.see_voxel_id = "Wood"
         elif self.new_voxel_id == WOOD :
             self.new_voxel_id = STONE
-            see_voxel_id = "Stone"
+            self.see_voxel_id = "Stone"
         elif self.new_voxel_id == STONE :
             self.new_voxel_id = DIRT
-            see_voxel_id = "Dirt"
-        return see_voxel_id 
-  
+            self.see_voxel_id = "Dirt"  
     
     def switch_voxel_down(self) :
         if self.new_voxel_id == DIRT : 
             self.new_voxel_id = STONE
-            see_voxel_id = "Stone"
+            self.see_voxel_id = "Stone"
         elif self.new_voxel_id == STONE : 
             self.new_voxel_id = WOOD
-            see_voxel_id = "Wood"
+            self.see_voxel_id = "Wood"
         elif self.new_voxel_id == WOOD :
             self.new_voxel_id = GRASS
-            see_voxel_id = "Grass"
+            self.see_voxel_id = "Grass"
         elif self.new_voxel_id == GRASS :
             self.new_voxel_id = LEAVES
-            see_voxel_id = "Leaves"
+            self.see_voxel_id = "Leaves"
         elif self.new_voxel_id == LEAVES :
             self.new_voxel_id = SAND
-            see_voxel_id = "Sand"
+            self.see_voxel_id = "Sand"
         elif self.new_voxel_id == SAND :
             self.new_voxel_id = SNOW
-            see_voxel_id = "Snow"
+            self.see_voxel_id = "Snow"
         elif self.new_voxel_id == SNOW :
             self.new_voxel_id = DIRT
-            see_voxel_id = "Dirt"
-        return see_voxel_id
+            self.see_voxel_id = "Dirt"
 
     def rebuild_adj_chunk(self, adj_voxel_pos):
         index = get_chunk_index(adj_voxel_pos)
